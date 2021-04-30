@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import KanbanColumn from "./column"
+import { TASK_STATUS } from "./../../common/types/kanban"
 
 const BoardRoot = styled.div`
     min-height: 0;
@@ -7,7 +8,6 @@ const BoardRoot = styled.div`
     min-width: 800px;
     max-width: 1400px;
     margin: auto;
-    background: pink;
 `;
 
 const BoardContent = styled.div`
@@ -21,7 +21,9 @@ const KanbanBoard = () => {
     return(
         <BoardRoot>
             <BoardContent>
-                KanbanBoard
+                {Object.keys(TASK_STATUS).map((status)=>(<KanbanColumn></KanbanColumn>)
+                )}
+
             </BoardContent>
         </BoardRoot>
     )

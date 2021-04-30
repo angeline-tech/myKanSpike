@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Layout, { Content, Header } from 'antd/lib/layout/layout';
 import {colours} from '../common/colours';
 import KanBanBoard from '../components/kanban/board'
-import TitleSection from '../components/title';
 
 const StyledLayout = styled(Layout)`
   /* We can't use "height: 100vh; width: 100vw;" here.
