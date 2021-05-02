@@ -1,3 +1,4 @@
+import _ from "lodash";
 import styled from "styled-components"
 import KanbanColumn from "./column"
 
@@ -16,28 +17,27 @@ display: flex;
 justify-content: space-around;
 `;
 
-const card1 = {description:"Card 1", isDragging:true}
-const card2 = {description:"Card 2", isDragging:false}
-const card3 = {description:"Card 3", isDragging:true}
+const card1 = {description:"Card 1"}
+const card2 = {description:"Card 2"}
+const card3 = {description:"Card 3"}
 const cards = [card1,card2,card3]
 
-export const boardState = {
-    "Backlog":{status:"Backlog",cards:[card1,card2,card3]},
-    "Today":{status:"Today",cards:[card1,card2]},
-    "Complete":{status:"Complete",cards:[card3]}
-}
+export const boardState = [
+    {status:"Backlog",cards:[card1,card2,card3]},
+    {status:"Today",cards:[card1,card2]},
+    {status:"Complete",cards:[card3]},
+    {status:"Archive",cards:[card3]},
+]
 
 const KanbanBoard = () => {
     return(
         <BoardRoot>
             <BoardContent>
-                {Object.keys(boardState).map((status)=>{
-                    return (    
-                        <KanbanColumn {...boardState[status]}></KanbanColumn>
+                {_.map(boardState,colProps => {
+                    return(
+                        <KanbanColumn {...colProps}></KanbanColumn>
                     )
-                }   
-                )}
-
+                })}
             </BoardContent>
         </BoardRoot>
     )
