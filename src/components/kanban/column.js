@@ -18,14 +18,11 @@ min-width: 0;
 }
 `;
 
-const KanbanColumn = () => {
-    const card1 = {description:"Card 1", isDragging:true}
-    const card2 = {description:"Card 2", isDragging:false}
-    const card3 = {description:"Card 3", isDragging:true}
-    const cards = [card1,card2,card3]
+const KanbanColumn = (props) => {
     return(
-        <ColumnRoot>
-            {cards.map((card)=>(
+        <ColumnRoot
+        title={props.status}>
+            {props.cards.map((card)=>(
                 <KanbanCard {...card}/> 
             ))}
         </ColumnRoot>
