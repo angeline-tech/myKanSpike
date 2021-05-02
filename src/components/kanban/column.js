@@ -1,6 +1,8 @@
 import { Card } from "antd"
 import styled from "styled-components"
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import KanbanCard from "./card"
+import {colours} from '../../common/colours';
 
 const ColumnRoot = styled(Card)`
 user-select: none;
@@ -19,12 +21,48 @@ min-width: 0;
 `;
 
 const KanbanColumn = (props) => {
+
+
+const DroppableRoot = styled.div`
+  height: 100%;
+  overflow-y: auto;
+  background-color: ${({ isDraggingOver }) =>
+    isDraggingOver ? colours.primary[2] : colours.primary[1]};
+`;
+
     return(
         <ColumnRoot
         title={props.status}>
-            {props.cards.map((card)=>(
-                <KanbanCard {...card}/> 
-            ))}
+            <Droppable droppableId={props.status}>
+        {(provided, snapshot) => (
+          <DroppableRoot
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            isDraggingOver={snapshot.isDraggingOver}
+          >
+            {props.cards.map((item, index) => {
+              return (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      key={item.id}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <KanbanCard
+                        item={item}
+                        status={item.status}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </DroppableRoot>
+        )}
+      </Droppable>
         </ColumnRoot>
     )
 }

@@ -9,14 +9,16 @@ const StyledCard = styled(Card)`
   background-color: ${(props) => (props.isDragging ? '#fafafa' : '#fff')};
 `;
 
-const KanbanCard = (props) => {
-
-
-
+const KanbanCard = ( {item,
+    status,
+    isDragging,
+    onEdit,
+    onDelete}) => {
     return(
         <StyledCard
-        isDragging={false}>
-            {props.description}
+        id={item.id}>
+            {item.title}
+            {item.description}
         </StyledCard>
     )
 }
