@@ -51,14 +51,6 @@ const handleDragEnd = ({
         if (!destination) {
           return;
         }
-        console.log("source")
-        console.log(source)
-        console.log("destination")
-        console.log(destination)
-        console.log("current")
-        console.log(current)
-        console.log("draft")
-        console.log(draft)
         const [removed] = draft[
           source.droppableId 
         ].cards.splice(source.index, 1);

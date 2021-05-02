@@ -20,9 +20,6 @@ min-width: 0;
 }
 `;
 
-const KanbanColumn = (props) => {
-
-
 const DroppableRoot = styled.div`
   height: 100%;
   overflow-y: auto;
@@ -30,17 +27,18 @@ const DroppableRoot = styled.div`
     isDraggingOver ? colours.primary[2] : colours.primary[1]};
 `;
 
+const KanbanColumn = ({status,cards}) => {
     return(
         <ColumnRoot
-        title={props.status}>
-            <Droppable droppableId={props.status}>
+        title={status}>
+            <Droppable droppableId={status}>
         {(provided, snapshot) => (
           <DroppableRoot
             ref={provided.innerRef}
             {...provided.droppableProps}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {props.cards.map((item, index) => {
+            {cards.map((item, index) => {
               return (
                 <Draggable key={item.id} draggableId={item.id} index={index}>
                   {(provided, snapshot) => (

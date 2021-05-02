@@ -16,6 +16,7 @@ const KanbanCard = ( {item,
     onDelete}) => {
     return(
         <StyledCard
+        isDragging={isDragging}
         id={item.id}>
             {item.title}
             {item.description}
