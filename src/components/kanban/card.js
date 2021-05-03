@@ -1,26 +1,36 @@
 
-import { Card } from 'antd';
-import styled from 'styled-components';
+import { Card } from 'semantic-ui-react';
+import styled from "styled-components"
+import {colours} from '../../common/colours';
 
-//this isn't working
 const StyledCard = styled(Card)`
-  margin: 0.5rem;
-  padding: 0.5rem;
-  background-color: ${(props) => (props.isDragging ? '#fafafa' : '#fff')};
+
+    background: ${({ isdragging }) =>
+    isdragging ? colours.primary[4] : colours.primary[3]} !important;
+    width: 90% !important;
+    padding: 0px !important;
+    margin-left: 10px !important; 
+    margin-right: 30px !important; 
+    margin-top: 10px !important; 
+    margin-bottom: 10px !important; 
 `;
 
 const KanbanCard = ( {item,
     status,
-    isDragging,
+    isdragging,
     onEdit,
     onDelete}) => {
     return(
+    
+
         <StyledCard
-        isDragging={isDragging}
+        isdragging={isdragging}
         id={item.id}>
-            {item.title}
-            {item.description}
+            <Card.Header> {item.title}</Card.Header>
+            <Card.Content>{item.description}</Card.Content>
+
         </StyledCard>
+
     )
 }
 

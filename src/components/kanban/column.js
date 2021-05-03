@@ -1,19 +1,20 @@
-import { Card } from "antd"
+import { Container, Button, Segment } from "semantic-ui-react"
 import styled from "styled-components"
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import KanbanCard from "./card"
 import {colours} from '../../common/colours';
 
-const ColumnRoot = styled(Card)`
+const ColumnRoot = styled(Container)`
 user-select: none;
 flex: 1;
 margin: 0.5rem;
 display: flex;
 flex-direction: column;
+padding:10px;
 // To force each flex item to have equal width
 // even if they have long texts with no spaces etc.
 min-width: 0;
-> .ant-card-body {
+> .ui.container.body {
   overflow: hidden;
   height: 100%;
   padding: 0;
@@ -21,16 +22,25 @@ min-width: 0;
 `;
 
 const DroppableRoot = styled.div`
-  height: 100%;
+  height: 90%;
   overflow-y: auto;
   background-color: ${({ isDraggingOver }) =>
     isDraggingOver ? colours.primary[2] : colours.primary[1]};
 `;
 
-const KanbanColumn = ({status,cards}) => {
+const KanbanColumn = ({status,cards, onClickAdd}) => {
     return(
         <ColumnRoot
-        title={status}>
+        key={status}
+        extra={
+          onClickAdd && (
+            <Button type="primary" onClick={onClickAdd}>
+              Add
+            </Button>
+          )}
+        >
+
+          <Segment>{status}</Segment>
             <Droppable droppableId={status}>
         {(provided, snapshot) => (
           <DroppableRoot
@@ -51,6 +61,7 @@ const KanbanColumn = ({status,cards}) => {
                       <KanbanCard
                         item={item}
                         status={item.status}
+                        isdragging={snapshot.isDragging}
                       />
                     </div>
                   )}
