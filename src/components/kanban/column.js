@@ -61,7 +61,7 @@ const KanbanColumn = ({status,cards, onClickAdd}) => {
                       <KanbanCard
                         item={item}
                         status={item.status}
-                        isdragging={snapshot.isDragging}
+                        isdragging={snapshot.isDragging.valueOf()}
                       />
                     </div>
                   )}
