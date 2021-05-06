@@ -2,15 +2,7 @@ import { Modal, Form, Button } from "semantic-ui-react";
 import { useState } from "react";
 
 const FormModal = ({ onClose, onOpen, visible, onOk, initialValues }) => {
-
-  console.log("Inital Values Are........");
-  console.log(initialValues);
-
   const [formValues, setformValues] = useState(initialValues);
-
-
-  console.log("FormValues are.....");
-  console.log(formValues);
 
   const onFieldChange = (event) => {
     const field = event.target.id;
@@ -21,13 +13,12 @@ const FormModal = ({ onClose, onOpen, visible, onOk, initialValues }) => {
   };
 
   const resetFields = () => {
-    console.log("trying to reset fields");
     setformValues({ title: "", description: "" });
   };
 
   return (
     <Modal onClose={onClose} onOpen={onOpen} open={visible}>
-      <Modal.Header>Add a To-do</Modal.Header>
+      <Modal.Header>{initialValues.title ? "Edit Item: " + initialValues.title : "Add an Item" }</Modal.Header>
       <Modal.Content>
         <Form>
           <Form.Field>

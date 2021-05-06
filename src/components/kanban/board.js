@@ -55,9 +55,7 @@ const KanbanBoard = () => {
   const [itemToEdit, setItemToEdit] = useState(null);
 
   const openModal = (item) => {
-    console.log(item)
     setItemToEdit(item);
-    console.log(itemToEdit)
     setModalVisible(true);
   };
 
@@ -132,7 +130,7 @@ const KanbanBoard = () => {
             } else {
               console.log("creating a new todo")
               // Adding new item as "to do"
-              draft["Today"].cards.push({
+              draft["Backlog"].cards.push({
                 ...values,
                 id: generateId(),
               });

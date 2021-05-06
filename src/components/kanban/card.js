@@ -1,12 +1,12 @@
 
-import { Card, Button } from 'semantic-ui-react';
+import { Card, Button, Icon } from 'semantic-ui-react';
 import styled from "styled-components"
 import {colours} from '../../common/colours';
 
 const StyledCard = styled(Card)`
 
     background: ${({ isdragging  }) =>
-    isdragging ? colours.primary[4] : colours.primary[3]} !important;
+    isdragging ? colours.primary[4] : colours.primary[0]} !important;
     width: 90% !important;
     padding: 0px !important;
     margin-left: 10px !important; 
@@ -26,14 +26,16 @@ const KanbanCard = ( {item,
         isdragging={isdragging}
         id={item.id}>
             <Card.Header> {item.title}</Card.Header>
+            {item.description && 
             <Card.Content>{item.description}</Card.Content>
+            }
             <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='green' onClick={()=>onEdit(item)}>
-            Edit
+        <div >
+          <Button icon color='green' size="mini" onClick={()=>onEdit(item)}>
+            <Icon name='edit outline' />
           </Button>
-          <Button basic color='red' onClick={()=>onDelete(status,item)}>
-            Delete
+          <Button icon color='red' size="mini" onClick={()=>onDelete(status,item)}>
+            <Icon name='delete' />
           </Button>
         </div>
       </Card.Content>
