@@ -54,8 +54,10 @@ const KanbanBoard = () => {
 
   const [itemToEdit, setItemToEdit] = useState(null);
 
-  const openModal = (itemToEdit) => {
-    setItemToEdit(itemToEdit);
+  const openModal = (item) => {
+    console.log(item)
+    setItemToEdit(item);
+    console.log(itemToEdit)
     setModalVisible(true);
   };
 
@@ -111,18 +113,24 @@ const KanbanBoard = () => {
       onOpen={openModal}
       visible={isModalVisible}
       onOk={(values) => {
+        console.log("Values")
+        console.log()
         setItemsByStatus((current) =>
           produce(current, (draft) => {
             if (itemToEdit) {
+              console.log("There is an item to edit")
               // Editing existing item
               const draftItem = Object.values(draft)
                 .flatMap((items) => items.cards)
                 .find((item) => item.id === itemToEdit.id);
               if (draftItem) {
+                console.log("Draft Item")
+                console.log(draftItem)
                 draftItem.title = values.title;
                 draftItem.description = values.description;
               }
             } else {
+              console.log("creating a new todo")
               // Adding new item as "to do"
               draft["Today"].cards.push({
                 ...values,

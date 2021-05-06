@@ -22,8 +22,6 @@ const KanbanCard = ( {item,
     onEdit,
     onDelete}) => {
     return(
-    
-
         <StyledCard
         isdragging={isdragging}
         id={item.id}>
@@ -31,7 +29,7 @@ const KanbanCard = ( {item,
             <Card.Content>{item.description}</Card.Content>
             <Card.Content extra>
         <div className='ui two buttons'>
-          <Button basic color='green' onClick={onEdit}>
+          <Button basic color='green' onClick={()=>onEdit(item)}>
             Edit
           </Button>
           <Button basic color='red' onClick={()=>onDelete(status,item)}>
