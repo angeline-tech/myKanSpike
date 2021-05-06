@@ -1,24 +1,24 @@
-import { Container, Button, Segment } from "semantic-ui-react"
-import styled from "styled-components"
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import KanbanCard from "./card"
-import {colours} from '../../common/colours';
+import { Container, Button, Segment, Header } from "semantic-ui-react";
+import styled from "styled-components";
+import { Droppable, Draggable } from "react-beautiful-dnd";
+import KanbanCard from "./card";
+import { colours } from "../../common/colours";
 
 const ColumnRoot = styled(Container)`
-user-select: none;
-flex: 1;
-margin: 0.5rem;
-display: flex;
-flex-direction: column;
-padding:10px;
-// To force each flex item to have equal width
-// even if they have long texts with no spaces etc.
-min-width: 0;
-> .ui.container.body {
-  overflow: hidden;
-  height: 100%;
-  padding: 0;
-}
+  user-select: none;
+  flex: 1;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  // To force each flex item to have equal width
+  // even if they have long texts with no spaces etc.
+  min-width: 0;
+  > .ui.container.body {
+    overflow: hidden;
+    height: 100%;
+    padding: 0;
+  }
 `;
 
 const DroppableRoot = styled.div`
@@ -28,20 +28,27 @@ const DroppableRoot = styled.div`
     isDraggingOver ? colours.primary[2] : colours.primary[1]};
 `;
 
-const KanbanColumn = ({status,cards, onClickAdd}) => {
-    return(
-        <ColumnRoot
-        key={status}
-        extra={
-          onClickAdd && (
-            <Button type="primary" onClick={onClickAdd}>
-              Add
-            </Button>
-          )}
-        >
+const StyledButton = styled(Button)`
+  float: right !important;
+`;
 
-          <Segment>{status}</Segment>
-            <Droppable droppableId={status}>
+const KanbanColumn = ({ status, cards, onClickAdd, onEdit, onDelete }) => {
+  return (
+    <ColumnRoot key={status}>
+      <Segment>
+        <div>
+          <Header as="h5">
+            {status}
+            {onClickAdd && (
+              <StyledButton size="mini" onClick={onClickAdd}>
+                Add
+              </StyledButton>
+            )}
+          </Header>
+        </div>
+      </Segment>
+
+      <Droppable droppableId={status}>
         {(provided, snapshot) => (
           <DroppableRoot
             ref={provided.innerRef}
@@ -60,8 +67,10 @@ const KanbanColumn = ({status,cards, onClickAdd}) => {
                     >
                       <KanbanCard
                         item={item}
-                        status={item.status}
+                        status={status}
                         isdragging={snapshot.isDragging.valueOf()}
+                        onDelete={onDelete}
+                        onEdit={onEdit}
                       />
                     </div>
                   )}
@@ -72,8 +81,8 @@ const KanbanColumn = ({status,cards, onClickAdd}) => {
           </DroppableRoot>
         )}
       </Droppable>
-        </ColumnRoot>
-    )
-}
+    </ColumnRoot>
+  );
+};
 
-export default KanbanColumn
+export default KanbanColumn;

@@ -1,13 +1,14 @@
 import _ from "lodash";
 import styled from "styled-components";
 import KanbanColumn from "./column";
+import FormModal from "./formModal";
 import { initalBoardState } from "../../common/defaultData";
 import { DragDropContext } from "react-beautiful-dnd";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import produce from "immer";
 import {colours} from '../../common/colours';
 
-// const generateId = () => Date.now().toString();
+const generateId = () => Date.now().toString();
 
 const BoardRoot = styled.div`
   min-height: 0;
@@ -15,7 +16,7 @@ const BoardRoot = styled.div`
   min-width: 800px;
   max-width: 1400px;
   margin: auto;
-  background: green;
+  background: ${colours.primary[5]};
 `;
 
 const BoardContent = styled.div`
@@ -28,6 +29,8 @@ const BoardContent = styled.div`
 
 const KanbanBoard = () => {
   const [itemsByStatus, setItemsByStatus] = useState(initalBoardState);
+
+  const [isModalVisible, setModalVisible ] = useState(false)
 
   const handleDragEnd = ({ source, destination }) => {
     setItemsByStatus((current) =>
@@ -49,19 +52,48 @@ const KanbanBoard = () => {
     );
   };
 
+  const [itemToEdit, setItemToEdit] = useState(null);
+
+  const openModal = (itemToEdit) => {
+    setItemToEdit(itemToEdit);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setItemToEdit(null);
+    setModalVisible(false);
+  };
+
+  const handleDelete = (status,itemToDelete) =>
+    setItemsByStatus((current) =>
+      produce(current, (draft) => {
+        draft[status].cards = draft[status].cards.filter(
+          (item) => item.id !== itemToDelete.id
+        );
+      })
+    );
+
+  const initialValues = useMemo(
+    () => ({
+      title: itemToEdit?.title ?? '',
+      description: itemToEdit?.description ?? '',
+    }),
+    [itemToEdit]
+  );
+
   const renderColumns = () => {
     return _.values(itemsByStatus).map((colProps) => {
       return (
         <KanbanColumn
           key={colProps.status}
           {...colProps}
-          // onClickAdd={
-          //   colProps.status === "Backlog"
-          //     ? () => openTaskItemModal(null)
-          //     : undefined
-          // }
-          // onEdit={openTaskItemModal}
-          // onDelete={handleDelete}
+          onClickAdd={
+            colProps.status === "Backlog"
+              ? () => openModal(null)
+              : undefined
+          }
+          onEdit={openModal}
+          onDelete={handleDelete}
         ></KanbanColumn>
       );
     });
@@ -73,6 +105,35 @@ const KanbanBoard = () => {
           <BoardContent>{renderColumns()}</BoardContent>
         </BoardRoot>
       </DragDropContext>
+
+      <FormModal
+      onClose={closeModal}
+      onOpen={openModal}
+      visible={isModalVisible}
+      onOk={(values) => {
+        setItemsByStatus((current) =>
+          produce(current, (draft) => {
+            if (itemToEdit) {
+              // Editing existing item
+              const draftItem = Object.values(draft)
+                .flatMap((items) => items.cards)
+                .find((item) => item.id === itemToEdit.id);
+              if (draftItem) {
+                draftItem.title = values.title;
+                draftItem.description = values.description;
+              }
+            } else {
+              // Adding new item as "to do"
+              draft["Today"].cards.push({
+                ...values,
+                id: generateId(),
+              });
+            }
+          })
+        );
+      }}
+      initialValues={initialValues}
+      />
     </>
   );
 };
